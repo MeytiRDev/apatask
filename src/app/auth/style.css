@@ -1,0 +1,17 @@
+.auth-gradient-bg {
+  background-image: linear-gradient(315deg, #00094b, #0c0c0c);
+}
+
+.login-register.active-section {
+  transform: translateY(0);
+}
+.login-register.inactive-section {
+  transform: translateY(-100vh);
+}
+
+.foregt.active-section {
+  transform: translateY(0);
+}
+.foregt.inactive-section {
+  transform: translateY(100vh);
+}
