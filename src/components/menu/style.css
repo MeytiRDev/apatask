@@ -1,0 +1,11 @@
+#lmenu[data-open="true"] {
+  visibility: visible;
+  opacity: 100;
+  transform: translateY(10px);
+}
+
+#lmenu[data-open="false"] {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(30px);
+}

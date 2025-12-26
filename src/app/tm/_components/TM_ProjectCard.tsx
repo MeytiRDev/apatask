@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Server_ProjectSchema } from "./TM_Projects";
+import { Server_ProjectSchema } from "./TMProjects";
 import Link from "next/link";
 
 export default function TM_ProjectCard({

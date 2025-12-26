@@ -2,11 +2,11 @@
 
 @theme {
   /* color pallet */
-  --color-primary: #0D1B2A;
-  --color-secondry: #1B263B;
-  --color-third: #778DA9;
-  --color-fourth: #415A77;
-  --color-fifth: #16213E;
+  --color-primary: #0d1b2a;
+  --color-secondry: #1b263b;
+  --color-third: #778da9;
+  --color-fourth: #415a77;
+  --color-fifth: #16213e;
 
   --color-custom-dark: #0c0c0c;
 
@@ -30,9 +30,14 @@ button {
   cursor: pointer;
 }
 
-input {
+input,
+textarea {
   outline: none;
   border: none;
+}
+
+textarea {
+  resize: none;
 }
 
 .c_container {

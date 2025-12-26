@@ -4,9 +4,8 @@ import { ReactElement } from "react";
 
 type CDropdownProps = {
   children: ReactElement;
-  props: DropdownProps;
 };
 
-export default function CDropdown({ props, children }: CDropdownProps) {
-  return <Dropdown {...props}>{children}</Dropdown>;
+export default function CDropdown(props: CDropdownProps & DropdownProps) {
+  return <Dropdown {...props}>{props.children}</Dropdown>;
 }

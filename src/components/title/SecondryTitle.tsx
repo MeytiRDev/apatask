@@ -8,10 +8,10 @@ export default function SecondryTitle({ title, icon, className }: any) {
         className
       )}
     >
-      <span className="empty:hidden text-white">
+      <span className="empty:hidden text-cyan-500">
         {icon}
       </span>
-      <span className="text-white">{title}</span>
+      <span className="text-cyan-500">{title}</span>
     </h2>
   );
 }

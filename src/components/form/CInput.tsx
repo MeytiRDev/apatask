@@ -30,7 +30,7 @@ export type CustomInputProps = {
 };
 
 const varients = {
-  primary: "flex items-center gap-2 px-2 border-b border-solid border-white/10",
+  primary: "flex items-center gap-2 px-2 bg-cyan-500/10 border border-solid border-cyan-500/30 rounded-xl",
 };
 
 export default function CInput({
@@ -69,7 +69,7 @@ export default function CInput({
           placeholder={inputConfigs.placeholder}
           autoComplete="off"
           className={twMerge(
-            "w-72 h-10 placeholder:text-white/75",
+            "w-72 h-10 text-white placeholder:text-white/75",
             inputConfigs.className
           )}
           onFocus={focusAndBlurFn("focus") as any}

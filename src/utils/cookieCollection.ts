@@ -12,3 +12,5 @@ export async function getCookie(key: string) {
   const value = cookie.get(key)?.value;
   return value;
 }
+
+

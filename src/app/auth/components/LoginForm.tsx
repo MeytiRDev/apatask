@@ -2,7 +2,7 @@
 import Button from "@/components/button/Button";
 import CInput from "@/components/form/CInput";
 import RHFBasicForm from "@/components/form/RHFBasicForm";
-import RHFContext from "@/components/RHFContext";
+import RHFContext from "@/components/form/RHFContext";
 import SecondryTitle from "@/components/title/SecondryTitle";
 import {
   requireGmail,
@@ -19,6 +19,8 @@ import { AuthTypeValues } from "./LoginRegisterContainer";
 import { useEffect, useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/zustand/auth";
+import { getPureCookie, setPureCookie } from "@/utils/clientCookiesCollection";
 
 type LoginFormProps = {
   authType: AuthTypeValues;
@@ -38,6 +40,7 @@ export default function LoginForm({
 }: LoginFormProps) {
   const ref = useRef<UseFormReturn | null>(null);
   const router = useRouter();
+  const { setIsLogin } = useAuth();
 
   const { mutateAsync } = useMutation({
     mutationFn: customFetch({
@@ -50,15 +53,18 @@ export default function LoginForm({
 
   async function submitHandler(data: any) {
     const { message, token } = (await mutateAsync({ body: data })) as any;
-
     if (message) {
       ref.current?.setError("root.server", {
         message,
       });
       return;
     }
-    document.cookie = `token=${token}`;
-    router.push("/");
+    setPureCookie("token", token);
+    const isToken = getPureCookie("token");
+    if (isToken) {
+      setIsLogin(true);
+      router.push("/");
+    }
   }
 
   useEffect(() => {
@@ -122,7 +128,7 @@ export default function LoginForm({
           <p className="empty:hidden text-red-500 bg-red-500/20 p-2 rounded-xl">
             {ref.current?.formState.errors.root?.server?.message as string}
           </p>
-          <Button type="submit" title="ورود" />
+          <Button variant="secondry" type="submit" title="ورود" className="w-full" />
 
           <p className="text-white text-center">
             در صورت نداشتن حساب کاربری{" "}

@@ -1,12 +1,11 @@
-"use client"
-import TM_Projects from "./_components/TM_Projects";
+"use client";
+import TMProjects from "./_components/TMProjects";
 
 export default function TMPage() {
-  // const 
   return (
     <div className="c_container">
-      <div className="my-20">
-        <TM_Projects />
+      <div className="my-10">
+        <TMProjects />
       </div>
     </div>
   );

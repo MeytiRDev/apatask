@@ -1,33 +1,55 @@
-import Link from "next/link";
-import { AiOutlineProject } from "react-icons/ai";
-import { FiHome } from "react-icons/fi";
+"use client";
+import { useAuth } from "@/zustand/auth";
+import { IoNotificationsOutline } from "react-icons/io5";
+import { MdOutlineAccountCircle } from "react-icons/md";
+import { Fragment } from "react/jsx-runtime";
+import HeaderNavsButton from "./HeaderNavsButton";
+import { FiUser } from "react-icons/fi";
+import HeaderNavsProfile from "./HeaderNavsProfile";
+import Button from "@/components/button/Button";
 
 const links = [
   {
-    title: "خانه",
-    icon: <FiHome />,
+    id: "auth",
+    type: "link",
+    label: "ورود به حساب",
+    icon: <MdOutlineAccountCircle />,
+    url: "/auth",
+  },
+  {
+    id: "profile",
+    type: "dropdown",
+    icon: <FiUser />,
     url: "/",
   },
   {
-    title: "تسک منیجر",
-    icon: <AiOutlineProject />,
-    url: "/tm",
+    id: "home",
+    type: "link",
+    icon: <IoNotificationsOutline />,
+    url: "/notifs",
   },
-];
+] as const;
 
 export default function HeaderNavs() {
+  const { isLogin } = useAuth();
+
+  console.log(isLogin);
+
   return (
-    <nav className="flex items-center justify-center gap-10">
-      {links.map(({ title, icon, url }) => {
+    <nav className="flex items-center justify-center gap-3">
+      {links.map(({ id, icon, url, type, label }) => {
         return (
-          <Link
-            key={url}
-            href={url}
-            className="flex items-center justify-center gap-1 text-white/75 hover:text-white transition-colors"
-          >
-            {icon}
-            <span>{title}</span>
-          </Link>
+          <Fragment key={id}>
+            {id === "auth" ? (
+              !isLogin ? (
+                <Button variant="third" title={label} />
+              ) : null
+            ) : type === "dropdown" ? (
+              <HeaderNavsProfile icon={icon} />
+            ) : (
+              <HeaderNavsButton icon={icon} />
+            )}
+          </Fragment>
         );
       })}
     </nav>
