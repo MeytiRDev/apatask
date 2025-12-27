@@ -10,9 +10,65 @@ type Func_AddBoardArgs = {
   position: string;
 };
 
+type Func_nTaskInfo = {
+  id: string;
+  boardId: string;
+  position: string;
+};
+
+function isDecInc(lPosition: string, nPosition: string): "INC" | "DEC" {
+  return lPosition > nPosition ? "DEC" : "INC";
+}
+
 export function useInfo() {
   const values = useContext(DataContext);
 
+  // tools
+  function findOneTask(
+    id: string
+  ): File_DataContextProvider.ServerData_TaskSchema["tasks"] {
+    const findIndex =
+      values?.tasks.findIndex((tasks: any) => {
+        return tasks.tasks.some((task: any) => task.id == id);
+      }) || 0;
+
+    const task = values?.tasks[findIndex].tasks.find((task: any) => {
+      return task.id == id;
+    });
+
+    return task;
+  }
+
+  function getRecordByTaskId(id: string) {
+    const record = values?.tasks.find((tasks: any) =>
+      tasks.tasks.some((task: any) => task.id === id)
+    );
+    return record;
+  }
+
+  function getRecordsOfTasks(fBoardId: string) {
+    const filter = values?.tasks.filter((record) => {
+      return record.boardId != fBoardId;
+    });
+    return filter;
+  }
+
+  function filteredTasks(
+    tasks: File_DataContextProvider.ServerData_TaskSchema["tasks"][],
+    fId: string
+  ) {
+    const filter = tasks.filter(({ id }) => {
+      return id != fId;
+    });
+    return filter;
+  }
+
+  function getOneRecordOfTasks(boardId: string) {
+    const record = values?.tasks.find((tasks: any) => tasks.boardId == boardId);
+    return record;
+  }
+
+  // dispatch
   function addBoard(board: Func_AddBoardArgs) {
     values?.setWorkspace((prev: any) => {
       return {
@@ -111,8 +167,6 @@ export function useInfo() {
     );
   }
 
-  function updateTaskPosition() {}
-
   function updateTaskInfo(
     task: File_DataContextProvider.ServerData_TaskSchema["tasks"]
   ) {
@@ -149,6 +203,46 @@ export function useInfo() {
     });
   }
 
+  function moveTask(nTaskInfo: Func_nTaskInfo) {
+    const lTaskInfo = findOneTask(nTaskInfo.id) as any;
+    const lTaskRecord = getRecordByTaskId(nTaskInfo.id) as any;
+
+    const moveType = isDecInc(lTaskInfo.position, nTaskInfo.position);
+
+    const filteredRecord =
+      getRecordsOfTasks(lTaskRecord?.boardId as string) || [];
+
+    if (nTaskInfo.boardId == lTaskRecord.boardId) {
+      const updateTasks = (lTaskRecord.tasks as any).map((task: any) => {
+        if (
+          moveType === "INC" &&
+          task.position <= nTaskInfo.position &&
+          task.id != nTaskInfo.id
+        ) {
+          return { ...task, position: task.position - 1 };
+        } else if (
+          moveType === "DEC" &&
+          task.position >= nTaskInfo.position &&
+          task.id != nTaskInfo.id
+        ) {
+          return { ...task, position: task.position + 1 };
+        }
+        return { ...task, position: nTaskInfo.position };
+      });
+
+      const sortedTasks = (updateTasks as any[]).sort(
+        (prev, next) => prev.position - next.position
+      );
+
+      values?.setWorkspace((prev: any) => {
+        return {
+          ...prev,
+          tasks: [...filteredRecord, { ...lTaskRecord, tasks: sortedTasks }],
+        };
+      });
+    }
+  }
+
   return {
     ...values,
     addBoard,
@@ -156,7 +250,8 @@ export function useInfo() {
     updateBoard,
     createTask,
     deleteTask,
-    updateTaskPosition,
+    moveTask,
     updateTaskInfo,
+    findOneTask,
   };
 }

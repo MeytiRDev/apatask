@@ -1,4 +1,5 @@
-import React, { ReactElement } from "react";
+"use client"
+import { ReactElement } from "react";
 
 type CardProps = {
   children: ReactElement[];

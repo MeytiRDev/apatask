@@ -9,3 +9,8 @@ export function getElementInfo(element: HTMLElement) {
   }
   return null;
 }
+
+export function getParentElement(element: HTMLElement, identifier: string) {
+  const parent = element.closest(identifier);
+  return parent;
+}

@@ -17,6 +17,7 @@ export namespace File_DataContextProvider {
       title: string;
       description: string;
       status: "PENDING" | "RESOLVED" | "REJECTED";
+      position: number;
       created_at: string;
     };
   };
